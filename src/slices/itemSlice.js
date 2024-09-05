@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const databaseURL = "https://dpocsai-good-day.herokuapp.com";
+const databaseURL = "https://good-day-e24214a2f847.herokuapp.com/";
 // "http://localhost:5000";
 // "https://dpocsai-good-day.herokuapp.com"
 
