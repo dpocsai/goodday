@@ -43,48 +43,50 @@ const itemSlice = createSlice({
   name: "items",
   initialState,
   reducers: {},
-  extraReducers: {
-    [fetchItems.pending]: (state) => {
-      state.loading = true;
-    },
-    [fetchItems.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.items = payload;
-    },
-    [fetchItems.rejected]: (state) => {
-      state.loading = false;
-    },
-    [updateItem.pending]: (state) => {
-      state.loading = true;
-    },
-    [updateItem.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-
-      state.items.map((item) => (item._id === payload._id ? payload : item));
-    },
-    [updateItem.rejected]: (state) => {
-      state.loading = false;
-    },
-    [createItem.pending]: (state) => {
-      state.loading = true;
-    },
-    [createItem.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.items.push(payload);
-    },
-    [createItem.rejected]: (state) => {
-      state.loading = false;
-    },
-    [deleteItem.pending]: (state) => {
-      state.loading = true;
-    },
-    [deleteItem.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.items.filter((item) => item._id !== payload._id);
-    },
-    [deleteItem.rejected]: (state) => {
-      state.loading = false;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchItems.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchItems.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.items = payload;
+      })
+      .addCase(fetchItems.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(updateItem.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateItem.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.items = state.items.map((item) =>
+          item._id === payload._id ? payload : item
+        );
+      })
+      .addCase(updateItem.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(createItem.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createItem.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.items.push(payload);
+      })
+      .addCase(createItem.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(deleteItem.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteItem.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.items = state.items.filter((item) => item._id !== payload._id);
+      })
+      .addCase(deleteItem.rejected, (state) => {
+        state.loading = false;
+      });
   },
 });
 
@@ -93,5 +95,4 @@ export const getItemById = (state, itemId) =>
 
 export const getItems = (state) => state.items.items;
 
-export const { _createItem, _deleteItem, _updateItem } = itemSlice.actions;
 export default itemSlice.reducer;
