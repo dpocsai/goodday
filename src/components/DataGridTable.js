@@ -171,6 +171,18 @@ const DataGridTable = () => {
           backgroundColor: "primary.dark",
 
           border: "1px sold white",
+          "& .MuiDataGrid-columnHeader": {
+            color: "background.paper",
+          },
+          "& .MuiDataGrid-iconSeparator": {
+            color: "background.paper",
+          },
+          "& .MuiDataGrid-sortIcon": {
+            color: "background.paper",
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            color: "background.paper",
+          },
         }}
         initialState={{
           sorting: {
@@ -182,10 +194,12 @@ const DataGridTable = () => {
         rows={rows}
         columns={columns}
         disableColumnFilter
+        pagination={false}
+        hideFooterPagination={true}
+        hideFooter={true}
         disableColumnMenu
         disableColumnSelector
         disableExtendRowFullWidth
-        rowsPerPageOptions={[]}
         experimentalFeatures={{ columnGrouping: true }}
         columnGroupingModel={[
           {
@@ -196,6 +210,8 @@ const DataGridTable = () => {
           },
         ]}
         getRowHeight={() => "auto"}
+        pageSizeOptions={[]}
+        pageSize={rows.length}
       />
     </Box>
   );
