@@ -27,14 +27,11 @@ import {
   getSelectedDateString,
 } from "../../helpers";
 import PieChart from "./PieChart";
-import useOutsideClick from "../../helpers/useOutsideClick";
 
 const ItemData = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const modalRef = useRef(null);
-
-  useOutsideClick(modalRef, () => navigate("/"));
 
   const { item } = location.state;
   const [range, setRange] = useState("All Time");

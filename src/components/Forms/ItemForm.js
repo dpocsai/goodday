@@ -21,7 +21,6 @@ import {
 
 import ItemIcons from "../Item/itemIcons";
 import { cleanInputValue } from "../../helpers";
-import useOutsideClick from "../../helpers/useOutsideClick";
 
 const ItemForm = ({
   formConfig: {
@@ -36,10 +35,18 @@ const ItemForm = ({
   const navigate = useNavigate();
   const modalRef = useRef(null);
 
-  // Use the custom hook to detect outside clicks
-  useOutsideClick(modalRef, () => navigate("/"));
-
   const [icon, setIcon] = useState(ItemIcons[itemData.icon]);
+
+  const handleIconChange = (event) => {
+    const selectedIcon = event.target.value;
+    setIcon(selectedIcon);
+    setItemData((prevData) => ({
+      ...prevData,
+      icon: Object.keys(ItemIcons).find(
+        (key) => ItemIcons[key] === selectedIcon
+      ),
+    }));
+  };
 
   const renderIconOptions = () => {
     return Object.values(ItemIcons).map((ItemIcon, idx) => {
@@ -111,10 +118,7 @@ const ItemForm = ({
           size="small"
           value={icon}
           label="Icon"
-          onChange={(e) => {
-            setIcon(e.target.value);
-            setItemData({ ...itemData, icon: e.target.value.props.id });
-          }}
+          onChange={handleIconChange}
           MenuProps={{ PaperProps: { sx: { maxHeight: 300 } } }}
         >
           {renderIconOptions()}
