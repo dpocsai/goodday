@@ -38,7 +38,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "node server/index.js",
     "start-server": "node server/index.js",
     "build": "craco build",
     "test": "craco test",
