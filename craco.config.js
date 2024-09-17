@@ -16,4 +16,15 @@ module.exports = {
       },
     },
   ],
+  webpack: {
+    configure: (webpackConfig, { env, paths }) => {
+      if (env === "production") {
+        // Remove the react-refresh plugin from production build
+        webpackConfig.plugins = webpackConfig.plugins.filter(
+          (plugin) => plugin.constructor.name !== "ReactRefreshWebpackPlugin"
+        );
+      }
+      return webpackConfig;
+    },
+  },
 };

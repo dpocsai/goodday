@@ -5,7 +5,6 @@ import {
   Typography,
   TextField,
   Box,
-  Button,
   Fab,
   CircularProgress,
 } from "@mui/material";
@@ -35,7 +34,7 @@ const Items = () => {
   const [loading, setLoading] = useState(true);
 
   const [date, setDate] = useState(dayjs());
-  const [calcScore, setCalcScore] = useState(false);
+  const [calcScore] = useState(false);
 
   const items = useSelector(getItems).filter((item) =>
     dayjs(item.dateCreated).isSameOrBefore(date, "day")

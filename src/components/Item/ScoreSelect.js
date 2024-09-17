@@ -7,7 +7,6 @@ import {
   SentimentNeutral,
   SentimentVeryDissatisfied,
 } from "@mui/icons-material";
-import { getSelectedDateString } from "../../helpers";
 
 import { updateItem } from "../../slices/itemSlice";
 
