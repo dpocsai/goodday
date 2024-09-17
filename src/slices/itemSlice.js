@@ -1,10 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const databaseURL = "https://good-day-e24214a2f847.herokuapp.com/";
-const databaseURL = "http://localhost:4000";
-
-// "https://dpocsai-good-day.herokuapp.com"
+const databaseURL = "https://good-day-e24214a2f847.herokuapp.com/";
+// const databaseURL = "http://localhost:4000";
 
 const initialState = { items: [], loading: false };
 

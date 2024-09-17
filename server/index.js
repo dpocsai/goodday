@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-require("dotenv").config(); // To load environment variables from .env file
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -9,7 +9,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", // Your frontend URL
+    origin: "https://dpocsai-good-day.netlify.app/",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
