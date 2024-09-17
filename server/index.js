@@ -9,8 +9,8 @@ const MONGODB_URI = process.env.MONGODB_URI;
 // Middleware
 app.use(
   cors({
-    // origin: "https://dpocsai-good-day.netlify.app",
-    origin: "http://localhost:3000",
+    origin: "https://dpocsai-good-day.netlify.app",
+    // origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
