@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import {
@@ -24,12 +24,17 @@ import {
   getAverageScore,
   getLongestScoreStreak,
   getDaysTracked,
+  getSelectedDateString,
 } from "../../helpers";
 import PieChart from "./PieChart";
+import useOutsideClick from "../../helpers/useOutsideClick";
 
 const ItemData = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const modalRef = useRef(null);
+
+  useOutsideClick(modalRef, () => navigate("/"));
 
   const { item } = location.state;
   const [range, setRange] = useState("All Time");
@@ -71,6 +76,7 @@ const ItemData = () => {
         padding: "1rem",
         margin: "2rem auto",
       }}
+      ref={modalRef}
     >
       <IconButton
         onClick={() => {
@@ -242,7 +248,7 @@ const ItemData = () => {
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "bold" }}>
-          Created on: {item.dateCreated}
+          Created on: {getSelectedDateString(item.dateCreated)}
         </Typography>
 
         <Typography sx={{ fontSize: "12px", fontWeight: "bold" }}>

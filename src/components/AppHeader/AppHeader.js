@@ -25,7 +25,7 @@ const AppHeader = () => {
                 setOpen(true);
               }}
             >
-              <Menu />
+              <Menu sx={{ "&:hover": { color: "white" } }} />
             </IconButton>
             <Link
               to="/"
@@ -38,7 +38,11 @@ const AppHeader = () => {
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ letterSpacing: "0.2rem", fontWeight: "700" }}
+                sx={{
+                  letterSpacing: "0.2rem",
+                  fontWeight: "700",
+                  "&:hover": { color: "white" },
+                }}
               >
                 GOOD DAY
               </Typography>

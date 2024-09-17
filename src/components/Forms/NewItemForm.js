@@ -38,8 +38,11 @@ const NewItemForm = () => {
       return;
     }
 
-    dispatch(createItem(itemData));
-    navigate("/");
+    const resultAction = await dispatch(createItem(itemData));
+
+    if (createItem.fulfilled.match(resultAction)) {
+      navigate("/");
+    } 
   };
 
   const formConfig = {

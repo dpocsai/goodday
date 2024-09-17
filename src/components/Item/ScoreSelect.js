@@ -7,6 +7,7 @@ import {
   SentimentNeutral,
   SentimentVeryDissatisfied,
 } from "@mui/icons-material";
+import { getSelectedDateString } from "../../helpers";
 
 import { updateItem } from "../../slices/itemSlice";
 
@@ -42,7 +43,7 @@ export default function ScoreSelect({ item, date }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setValue(curItem.scores[date] || 0);
+    setValue(curItem?.scores?.[date] || 0);
   }, [date, curItem]);
 
   const handleUpdateItem = (itemId, updatedItem) => {
@@ -52,7 +53,7 @@ export default function ScoreSelect({ item, date }) {
     <StyledRating
       max={3}
       name="score"
-      defaultValue={curItem.scores[date] || 0}
+      defaultValue={curItem?.scores?.[date] || 0}
       value={value}
       IconContainerComponent={IconContainer}
       getLabelText={(value) => ratingIcons[value].label}
@@ -62,7 +63,10 @@ export default function ScoreSelect({ item, date }) {
         const selectedScore = +e.target.value === value ? 0 : +e.target.value;
         let updatedItem = {
           ...curItem,
-          scores: { ...curItem.scores, [date]: selectedScore },
+          scores: {
+            ...curItem?.scores,
+            [date]: selectedScore,
+          },
         };
         if (updatedItem.scores[date] === 0) {
           delete updatedItem.scores[date];

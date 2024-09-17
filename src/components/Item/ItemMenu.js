@@ -78,7 +78,7 @@ const ItemMenu = ({ item, handleMenuClose, menuOpen, anchorEl }) => {
             <ListItemText primary="Edit" />
           </ListItem>
         </Link>
-        <ListItem button onClick={handleDeleteItem}>
+        <ListItem button onClick={handleDeleteItem} sx={{ cursor: "pointer" }}>
           <ListItemAvatar sx={{ minWidth: "40px" }}>
             <Avatar
               sx={{

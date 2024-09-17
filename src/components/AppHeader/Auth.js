@@ -36,6 +36,7 @@ const Auth = () => {
     <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
       {!userId ? (
         <GoogleLogin
+          sx={{ "&:hover": { color: "white" } }}
           onSuccess={handleSignIn}
           onError={() => {
             console.log("Login Failed");
@@ -43,7 +44,12 @@ const Auth = () => {
         />
       ) : (
         <LogoutTwoTone
-          sx={{ cursor: "pointer", color: "background.paper", margin: "1rem" }}
+          sx={{
+            cursor: "pointer",
+            color: "background.paper",
+            margin: "1rem",
+            "&:hover": { color: "white" },
+          }}
           onClick={handleSignOut}
         />
       )}

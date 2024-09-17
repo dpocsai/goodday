@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import {
@@ -21,6 +21,7 @@ import {
 
 import ItemIcons from "../Item/itemIcons";
 import { cleanInputValue } from "../../helpers";
+import useOutsideClick from "../../helpers/useOutsideClick";
 
 const ItemForm = ({
   formConfig: {
@@ -33,6 +34,10 @@ const ItemForm = ({
   },
 }) => {
   const navigate = useNavigate();
+  const modalRef = useRef(null);
+
+  // Use the custom hook to detect outside clicks
+  useOutsideClick(modalRef, () => navigate("/"));
 
   const [icon, setIcon] = useState(ItemIcons[itemData.icon]);
 
@@ -58,6 +63,7 @@ const ItemForm = ({
         padding: "1rem",
         margin: "1rem auto",
       }}
+      ref={modalRef}
     >
       <IconButton
         onClick={() => {

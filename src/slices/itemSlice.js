@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const databaseURL = "https://good-day-e24214a2f847.herokuapp.com/";
-// "http://localhost:5000";
+// const databaseURL = "https://good-day-e24214a2f847.herokuapp.com/";
+const databaseURL = "http://localhost:4000";
+
 // "https://dpocsai-good-day.herokuapp.com"
 
 const initialState = { items: [], loading: false };
@@ -93,6 +94,8 @@ const itemSlice = createSlice({
 export const getItemById = (state, itemId) =>
   state.items.items.find((item) => item._id === itemId);
 
-export const getItems = (state) => state.items.items;
+export const getItems = (state) => {
+  return state.items.items;
+};
 
 export default itemSlice.reducer;

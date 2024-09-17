@@ -18,7 +18,8 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-
+import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import {
   getPrevDateString,
   getNextDateString,
@@ -27,22 +28,17 @@ import {
 import { fetchItems, getItems } from "../slices/itemSlice";
 import Item from "./Item/Item";
 
+dayjs.extend(isSameOrBefore);
+
 const Items = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
-  const [date, setDate] = useState(
-    new Date().toLocaleDateString("en-US", {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-    })
-  );
-  new Date().toLocaleDateString();
+  const [date, setDate] = useState(dayjs());
   const [calcScore, setCalcScore] = useState(false);
 
-  const items = useSelector(getItems).filter(
-    (item) => new Date(item.dateCreated) <= new Date(date)
+  const items = useSelector(getItems).filter((item) =>
+    dayjs(item.dateCreated).isSameOrBefore(date, "day")
   );
 
   useEffect(() => {
@@ -54,15 +50,19 @@ const Items = () => {
   }, [date, calcScore, dispatch]);
 
   const renderItems = () => {
-    return items.map((item) => <Item key={item._id} item={item} date={date} />);
+    return items.map((item) => (
+      <Item key={item._id} item={item} date={getSelectedDateString(date)} />
+    ));
   };
 
   const getDayScore = () => {
-    if (!items.every((item) => item.scores[date])) {
+    let dateKey = getSelectedDateString(date);
+
+    if (!items.every((item) => item.scores[dateKey])) {
       return null;
     }
     let sum = items.reduce((sum, item) => {
-      sum += item.scores[date] || 0;
+      sum += item.scores[dateKey] || 0;
       return sum;
     }, 0);
     let score = Math.round((sum / items.length + Number.EPSILON) * 100) / 100;
@@ -70,12 +70,8 @@ const Items = () => {
   };
 
   const getDayIcon = () => {
-    if (
-      !items.every((item) => {
-        return item.scores[date];
-      }) ||
-      !items.length
-    ) {
+    let dateKey = getSelectedDateString(date);
+    if (!items.every((item) => item.scores[dateKey]) || !items.length) {
       return;
     }
     let score = getDayScore();
@@ -181,14 +177,16 @@ const Items = () => {
           }}
           onClick={() => {
             if (
-              items.every(
-                (item) =>
-                  new Date(getPrevDateString(date)) < new Date(item.dateCreated)
+              items.every((item) =>
+                dayjs(getPrevDateString(date)).isBefore(
+                  dayjs(item.dateCreated),
+                  "day"
+                )
               )
             )
               return;
 
-            setDate(getPrevDateString(date));
+            setDate(dayjs(getPrevDateString(date)));
           }}
         />
 
@@ -196,37 +194,51 @@ const Items = () => {
           <MobileDatePicker
             sx={{
               color: "background.default",
+              backgroundColor: "background.paper",
             }}
             value={date}
-            onChange={(date) => {
+            shouldDisableDate={(newDate) => {
+              return (
+                items.every((item) =>
+                  dayjs(newDate).isBefore(dayjs(item.dateCreated), "day")
+                ) || dayjs(newDate).isAfter(dayjs())
+              );
+            }}
+            onChange={(newDate) => {
               if (
-                items.every(
-                  (item) => new Date(date) < new Date(item.dateCreated)
+                items.every((item) =>
+                  dayjs(newDate).isBefore(dayjs(item.dateCreated), "day")
                 ) ||
-                new Date(date) > new Date()
+                dayjs(newDate).isAfter(dayjs())
               ) {
                 return;
               }
-              setDate(getSelectedDateString(date));
+
+              setDate(dayjs(newDate));
             }}
             closeOnSelect
-            renderInput={(params) => (
-              <TextField
-                sx={{
-                  input: {
+            slots={{
+              textField: (params) => (
+                <TextField
+                  {...params}
+                  sx={{
                     textAlign: "center",
+                    "& input": {
+                      textAlign: "center",
+                      userSelect: "none",
+                      cursor: "pointer",
+                    },
+                    backgroundColor: "background.paper",
                     color: "background.paper",
-                    cursor: "pointer",
-                    padding: "0.5rem 0",
-                    "&:hover": { color: "white" },
-                  },
-                  "& fieldset": { border: "none" },
-                  backgroundColor: "primary.dark",
-                  borderRadius: "5px",
-                }}
-                {...params}
-              />
-            )}
+                    borderRadius: "5px",
+                    border: "none",
+                    "&:hover": {
+                      backgroundColor: "white",
+                    },
+                  }}
+                />
+              ),
+            }}
           />
         </LocalizationProvider>
         <ArrowForward
@@ -236,10 +248,10 @@ const Items = () => {
             "&:hover": { color: "white" },
           }}
           onClick={() => {
-            if (new Date(getNextDateString(date)) > new Date()) {
+            if (dayjs(getNextDateString(date)).isAfter(dayjs())) {
               return;
             }
-            setDate(getNextDateString(date));
+            setDate(dayjs(getNextDateString(date)));
           }}
         />
       </Box>
@@ -295,23 +307,7 @@ const Items = () => {
           </Fab>
         </Link>
       </Box>
-
       {renderItems()}
-      <Button
-        variant="contained"
-        onClick={() => {
-          setCalcScore(!calcScore);
-        }}
-        sx={{
-          margin: "1rem 0",
-          backgroundColor: "primary.dark",
-          color: "background.paper",
-          width: "9rem",
-          "&:hover": { color: "white" },
-        }}
-      >
-        Get Score
-      </Button>
     </Box>
   );
 };

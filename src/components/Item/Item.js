@@ -45,9 +45,8 @@ const Item = ({ item, date }) => {
           onClick={(e) => handleMenuOpen(e, item._id)}
           sx={{ color: "background.paper" }}
         >
-          <MoreVert />
+          <MoreVert sx={{ "&:hover": { color: "white" } }} />
         </IconButton>
-
         <ListItemAvatar>
           <Avatar
             sx={{
@@ -65,6 +64,7 @@ const Item = ({ item, date }) => {
             color: "inherit",
             textDecoration: "inherit",
             marginRight: "auto",
+            width: "100%",
           }}
           state={{ item }}
         >
@@ -76,6 +76,7 @@ const Item = ({ item, date }) => {
               cursor: "pointer",
               "&:hover": {
                 color: "white",
+                fontSize: "18px",
               },
             }}
           />

@@ -21,7 +21,6 @@ const OverallPieChart = ({ scores, range }) => {
     });
 
   const getScoreCount = (score) => {
-    console.log(scores);
     if (!scores.length) {
       return 0;
     }

@@ -77,7 +77,7 @@ const NewItemForm = () => {
     }
 
     dispatch(createItem(itemData));
-    navigate("/");
+    window.location.reload(true);
   };
 
   return (
