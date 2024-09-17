@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useConfirm } from "material-ui-confirm";
 import {
   ListItem,
@@ -11,22 +11,24 @@ import {
   Menu,
 } from "@mui/material";
 import { Delete, Edit, AutoGraph } from "@mui/icons-material";
-
-import { deleteItem } from "../../slices/itemSlice";
+import { deleteItem } from "../../slices/itemSlice"; // Ensure deleteItem is handling state update in your slice
 
 const ItemMenu = ({ item, handleMenuClose, menuOpen, anchorEl }) => {
   const confirm = useConfirm();
   const dispatch = useDispatch();
 
-  const handleDeleteItem = () => {
+  const handleDeleteItem = async () => {
     handleMenuClose();
     confirm({
       description: `"${item.title}" and all its data will be deleted`,
       confirmationButtonProps: { autoFocus: true },
-    }).then(async () => {
-      await dispatch(deleteItem(item._id));
-      window.location.reload(true);
-    });
+    })
+      .then(async () => {
+        await dispatch(deleteItem(item._id)); // Dispatch delete action
+      })
+      .catch(() => {
+        // Handle cancellation or error
+      });
   };
 
   return (
@@ -97,4 +99,5 @@ const ItemMenu = ({ item, handleMenuClose, menuOpen, anchorEl }) => {
     </Menu>
   );
 };
+
 export default ItemMenu;
